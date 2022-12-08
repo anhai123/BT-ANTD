@@ -1,0 +1,8 @@
+.sword {
+    width: 20;
+    font-size: 40; 
+    position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) 
+}
