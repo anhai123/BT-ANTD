@@ -4,7 +4,7 @@ import VirtualList from "rc-virtual-list";
 import { useDispatch, useSelector } from "react-redux";
 
 const ContainerHeight = 400;
-const SelectHero = ({ parentToChildrenForSelectHero }) => {
+const SelectHero = ({ parentToChildrenForSelectHero, clickRebattle }) => {
   const { heroList } = useSelector((state) => state.hero);
   const [newSelectedHero, setNewSelectedHero] = useState([]);
   const onChange = (e, key) => {
@@ -22,14 +22,14 @@ const SelectHero = ({ parentToChildrenForSelectHero }) => {
     }
   };
   useEffect(() => {
-    if (newSelectedHero.length == 2) {
+    console.log(clickRebattle.clickRebattle);
+    if (newSelectedHero.length == 2 && clickRebattle.clickRebattle) {
       parentToChildrenForSelectHero.setIndexOfBattleHero([...newSelectedHero]);
     }
-  }, [newSelectedHero]);
+  }, [newSelectedHero, clickRebattle.clickRebattle]);
   return (
     <Card
       title="Select another 2 hero to rebattle"
-      extra={<a href="#">More</a>}
       style={{
         width: 400,
         height: 400,

@@ -135,7 +135,7 @@ const HeroDes = () => {
 
       <Form
         form={form}
-        style={{ paddingTop: 40 }}
+        style={{ paddingTop: 40, width: "35%" }}
         name="basic"
         labelCol={{
           span: 30,
@@ -151,7 +151,7 @@ const HeroDes = () => {
         autoComplete="off"
       >
         <Card title={data.heroname} bordered={false}>
-          <ul>
+          <ul style={{ listStyleType: "none" }}>
             {origindata.map((data) => {
               if (data[0] !== "key") {
                 if (data[0] === editingKey) {
@@ -205,19 +205,26 @@ const HeroDes = () => {
                   );
                 }
                 return (
-                  <li key={data[0]}>
-                    <span>{data[0]}:</span>
-                    <span>
+                  <li key={data[0]} style={{ marginBottom: "20px" }}>
+                    <div style={{ width: "40%", display: "inline-block" }}>
+                      {data[0]}:
+                    </div>
+                    <div style={{ display: "inline-block" }}>
                       {data[0] === "avatar" ? (
-                        <span>
+                        <>
                           <PaperClipOutlined />
                           {data[1].file.name}
-                        </span>
+                        </>
                       ) : (
                         data[1]
                       )}
-                    </span>
-                    <Button onClick={() => handelClickEditButton(data[0])}>
+                    </div>
+
+                    <Button
+                      style={{ position: "absolute", right: "-10%" }}
+                      className="edit-button"
+                      onClick={() => handelClickEditButton(data[0])}
+                    >
                       edit
                     </Button>
                   </li>

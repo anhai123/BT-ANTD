@@ -24,7 +24,7 @@ const BattleField = () => {
   const [result, setResult] = useState(false);
   const [indexOfBattleHero, setIndexOfBattleHero] = useState([]);
   const [winner, setWinner] = useState();
-  const [SelectedHero, setSelectedHero] = useState([]);
+  const [clickRebattle, setClickRebattle] = useState(false);
   const ur = useRef();
   useEffect(() => {
     if (heroList.length < 2) {
@@ -100,6 +100,12 @@ const BattleField = () => {
       setWinner(Hero1);
       console.log(Hero1);
     } else setWinner(Hero2);
+  };
+  const clickRebatteButton = () => {
+    setClickRebattle(true);
+    setTimeout(() => {
+      setClickRebattle(false);
+    }, 1000);
   };
   return (
     <>
@@ -193,25 +199,41 @@ const BattleField = () => {
                     opponent only {winner.other}
                   </span> */}
                   {winner ? (
-                    <span>
-                      War result: The winner is {winner.heroname} with{" "}
-                      {winner.damagedone} while opponent only {winner.other}
-                    </span>
+                    <>
+                      <span>
+                        War result: The winner is {winner.heroname} with{" "}
+                        {winner.damagedone} damage done while opponent only do{" "}
+                        {winner.other}
+                      </span>
+                      <Image
+                        src={URL.createObjectURL(
+                          winner.avatar.file.originFileObj
+                        )}
+                      />
+                    </>
                   ) : (
                     <span> War result: Draw</span>
                   )}
-                </>
-              }
-              extra={
-                <>
-                  <Button type="primary">Rebattle</Button>
                 </>
               }
             />
           )}
           <SelectHero
             parentToChildrenForSelectHero={{ setIndexOfBattleHero }}
+            clickRebattle={{ clickRebattle }}
           />
+
+          <Button
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translate(-50%, 10px)",
+            }}
+            type="primary"
+            onClick={clickRebatteButton}
+          >
+            Rebattle
+          </Button>
         </>
       )}
     </>

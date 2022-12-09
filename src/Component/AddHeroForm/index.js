@@ -206,7 +206,11 @@ const AddHeroForm = () => {
           span: 16,
         }}
       >
-        <Button type="" htmlType="submit">
+        <Button
+          style={{ left: "13%", width: "41%", marginTop: "30px" }}
+          type=""
+          htmlType="submit"
+        >
           Submit
         </Button>
       </Form.Item>
