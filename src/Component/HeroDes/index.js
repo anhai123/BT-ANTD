@@ -126,6 +126,33 @@ const HeroDes = () => {
     // dispatch(getAllUserPost())
     navigate("/hero-list", { replace: true });
   }
+  const ChoseName = (data) => {
+    let name;
+    console.log(data);
+    switch (data) {
+      case "heroname":
+        name = "Tên nhân vật:";
+        break;
+      case "avatar":
+        name = "Ảnh đại diện:";
+        break;
+      case "description":
+        name = "Miêu tả:";
+        break;
+      case "attackP":
+        name = "Điểm tấn công:";
+        break;
+      case "defendP":
+        name = "Điểm phòng thủ:";
+        break;
+      case "crit_damage":
+        name = "Tỉ lệ chí mạng:";
+        break;
+      default:
+      // code block
+    }
+    return <p>{name}</p>;
+  };
   return (
     <div className="description-containner">
       <Image
@@ -135,7 +162,7 @@ const HeroDes = () => {
 
       <Form
         form={form}
-        style={{ paddingTop: 40, width: "35%" }}
+        style={{ width: "40%" }}
         name="basic"
         labelCol={{
           span: 30,
@@ -207,7 +234,7 @@ const HeroDes = () => {
                 return (
                   <li key={data[0]} style={{ marginBottom: "20px" }}>
                     <div style={{ width: "40%", display: "inline-block" }}>
-                      {data[0]}:
+                      {ChoseName(data[0])}
                     </div>
                     <div style={{ display: "inline-block" }}>
                       {data[0] === "avatar" ? (
@@ -221,7 +248,7 @@ const HeroDes = () => {
                     </div>
 
                     <Button
-                      style={{ position: "absolute", right: "-10%" }}
+                      style={{ position: "absolute", right: "0%" }}
                       className="edit-button"
                       onClick={() => handelClickEditButton(data[0])}
                     >
@@ -233,20 +260,10 @@ const HeroDes = () => {
             })}
           </ul>
 
-          <Form.Item
-            name={data[0]}
-            style={{
-              margin: 0,
-            }}
-            rules={[
-              {
-                required: true,
-                message: `Please Input ${data[0]}!`,
-              },
-            ]}
-          ></Form.Item>
-
-          <Button onClick={() => handelClickDeleteHeroButton(data["key"])}>
+          <Button
+            style={{ marginLeft: "40px" }}
+            onClick={() => handelClickDeleteHeroButton(data["key"])}
+          >
             Delete hero
           </Button>
         </Card>
