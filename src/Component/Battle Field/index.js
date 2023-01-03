@@ -7,6 +7,7 @@ import {
   Col,
   Row,
   Image,
+  message,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
@@ -39,8 +40,10 @@ const BattleField = () => {
     }
   }, []);
   useEffect(() => {
-    if (indexOfBattleHero.length == 2) {
+    if (indexOfBattleHero.length === 2) {
       checkHeroWinBattle();
+    } else if (indexOfBattleHero.length > 2) {
+      message.error("Chỉ được chọn 2 nhân vật thôi");
     }
   }, [indexOfBattleHero]);
   const showModal = () => {
@@ -103,6 +106,17 @@ const BattleField = () => {
   };
   const clickRebatteButton = () => {
     setClickRebattle(true);
+    setResult(matchResult[0]);
+    let heroIndex;
+    while (indexOfBattleHero.length < 2) {
+      let heroindexInstant = getRandomInt(heroList.length);
+      if (heroIndex !== heroindexInstant) {
+        heroIndex = heroindexInstant;
+        indexOfBattleHero.push(heroIndex);
+      }
+    }
+    setIndexOfBattleHero([...indexOfBattleHero]);
+    checkHeroWinBattle();
     setTimeout(() => {
       setClickRebattle(false);
     }, 1000);
@@ -112,8 +126,8 @@ const BattleField = () => {
       {heroList.length < 2 ? (
         <>
           <Alert
-            message="Heroes are missing"
-            description="Add at least 2 heroes to begin. Go back to add hero page in 3 second."
+            message="Thiếu nhân vật"
+            description="Để bắt đầu cuộc chiến cần tạo ra tối thiểu 2 đối thủ. Chuẩn bị quay lại trang tạo nhân vật"
             type="error"
             showIcon
           />
@@ -128,23 +142,19 @@ const BattleField = () => {
       ) : (
         <>
           <Modal
-            title="Draw?"
+            title="Hòa bình?"
             onOk={handleOk}
             onCancel={handleCancel}
             open={isModalOpen}
-            cancelText={"No, more blood"}
-            okText={"Angle decision"}
+            cancelText={"Tiếp tục"}
+            okText={"Hòa bình"}
           >
-            We do not have to fight each other. Let's make peace in 5 second or
-            a war will begin.
+            Yêu cầu hòa bình (Em tạo ra để sử dụng thêm các component của ant
+            design). Nếu không chấp nhận thì ấn tiếp tục
           </Modal>
 
           {result === matchResult[1] && (
-            <Result
-              icon={<SmileOutlined />}
-              title="Great, you're such a kind-hearted person"
-              extra={<Button type="primary">Next</Button>}
-            />
+            <Result icon={<SmileOutlined />} title="Được rồi, trận này hòa" />
           )}
           {result === matchResult[0] && (
             <Result
@@ -155,12 +165,7 @@ const BattleField = () => {
                     <Col xs={2} sm={4} md={6} lg={8} xl={10}>
                       {heroList[indexOfBattleHero[0]].heroname}
                       <br></br>
-                      <Image
-                        src={URL.createObjectURL(
-                          heroList[indexOfBattleHero[0]].avatar.file
-                            .originFileObj
-                        )}
-                      />
+                      <Image src={heroList[indexOfBattleHero[0]].avatar} />
                     </Col>
                     <Col
                       xs={20}
@@ -184,12 +189,7 @@ const BattleField = () => {
                     <Col xs={2} sm={4} md={6} lg={8} xl={10}>
                       {heroList[indexOfBattleHero[1]].heroname}
                       <br></br>
-                      <Image
-                        src={URL.createObjectURL(
-                          heroList[indexOfBattleHero[1]].avatar.file
-                            .originFileObj
-                        )}
-                      />
+                      <Image src={heroList[indexOfBattleHero[1]].avatar} />
                     </Col>
                   </Row>
                   <br></br>
@@ -201,18 +201,19 @@ const BattleField = () => {
                   {winner ? (
                     <>
                       <span>
-                        War result: The winner is {winner.heroname} with{" "}
-                        {winner.damagedone} damage done while opponent only do{" "}
-                        {winner.other}
+                        Kết quả cuộc chiến: Người thắng cuộc là{" "}
+                        {winner.heroname} với {winner.damagedone} sát thương
+                        trong khi đối thủ chỉ tạo ra{" "}
+                        {winner.other < 0
+                          ? "không thể tạo ra bất cứ"
+                          : winner.other}{" "}
+                        sát thương
                       </span>
-                      <Image
-                        src={URL.createObjectURL(
-                          winner.avatar.file.originFileObj
-                        )}
-                      />
+                      <br></br>
+                      <Image src={winner.avatar} />
                     </>
                   ) : (
-                    <span> War result: Draw</span>
+                    <span>Kết quả cuộc chiến: Hòa</span>
                   )}
                 </>
               }
@@ -222,18 +223,19 @@ const BattleField = () => {
             parentToChildrenForSelectHero={{ setIndexOfBattleHero }}
             clickRebattle={{ clickRebattle }}
           />
-
-          <Button
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translate(-50%, 10px)",
-            }}
-            type="primary"
-            onClick={clickRebatteButton}
-          >
-            Rebattle
-          </Button>
+          <Row>
+            <Button
+              style={{
+                position: "absolute",
+                left: "50%",
+                transform: "translate(-50%, 10px)",
+              }}
+              type="primary"
+              onClick={clickRebatteButton}
+            >
+              Chiến tiếp
+            </Button>
+          </Row>
         </>
       )}
     </>

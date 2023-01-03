@@ -8,6 +8,7 @@ const pageSize = 8;
 const HeroList = () => {
   const dispatcher = useDispatch();
   const { heroList } = useSelector((state) => state.hero);
+
   const [state, setState] = useState({
     heroList,
     totalPage: 0,
@@ -48,7 +49,7 @@ const HeroList = () => {
       {singleHero ? (
         <Navigate to="/hero-description" state={singleHero} replace={true} />
       ) : (
-        heroList?.map(
+        heroList.map(
           (hero, index) =>
             index >= state.minIndex &&
             index < state.maxIndex && (
@@ -59,7 +60,7 @@ const HeroList = () => {
                 cover={
                   <img
                     alt="example"
-                    src={URL.createObjectURL(hero.avatar.file.originFileObj)}
+                    src={hero.avatar}
                     className="postImage"
                     onClick={() => handleClickImageEvent(hero)}
                   />
@@ -69,9 +70,9 @@ const HeroList = () => {
                   title={hero.heroname}
                   description={
                     <>
-                      <p>Attack point: {hero.attackP}</p>
-                      <p>Defend point: {hero.defend}</p>
-                      <p>Critical damage:{hero.crit_damage}</p>
+                      <p>Điểm tấn công: {hero.attackP}</p>
+                      <p>Điểm phòng thủ: {hero.defend}</p>
+                      <p>Tỉ lệ chí mạng: {hero.crit_damage}</p>
                     </>
                   }
                 />
@@ -84,7 +85,7 @@ const HeroList = () => {
         current={state.current}
         total={state.heroList.length}
         onChange={handleChange}
-        style={{ bottom: "0px !important" }}
+        style={{ marginTop: "6rem", bottom: "0px !important" }}
       />
     </div>
   );

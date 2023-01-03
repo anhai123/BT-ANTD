@@ -16,23 +16,25 @@ const SelectHero = ({ parentToChildrenForSelectHero, clickRebattle }) => {
     if (e.target.checked === false) {
       setNewSelectedHero(
         newSelectedHero.filter(function (ele) {
-          return ele != index;
+          return ele !== index;
         })
       );
     }
   };
   useEffect(() => {
     console.log(clickRebattle.clickRebattle);
-    if (newSelectedHero.length == 2 && clickRebattle.clickRebattle) {
+    if (newSelectedHero.length === 2 && clickRebattle.clickRebattle) {
       parentToChildrenForSelectHero.setIndexOfBattleHero([...newSelectedHero]);
+    } else if (newSelectedHero.length > 2) {
+      message.error("Chỉ được chọn 2 nhân vật thôi");
     }
   }, [newSelectedHero, clickRebattle.clickRebattle]);
   return (
     <Card
-      title="Select another 2 hero to rebattle"
+      title="Chọn 2 nhân vật khác để bắt đầu trận chiến mới"
       style={{
         width: 400,
-        height: 400,
+        height: 500,
         left: " 50%",
         transform: "translate(-50%, 0%)",
       }}
@@ -43,21 +45,18 @@ const SelectHero = ({ parentToChildrenForSelectHero, clickRebattle }) => {
           height={ContainerHeight}
           itemHeight={47}
           itemKey="email"
+
           // onScroll={onScroll}
         >
           {(item, index) => (
             <List.Item key={item.key}>
               <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={URL.createObjectURL(item.avatar.file.originFileObj)}
-                  />
-                }
+                avatar={<Avatar src={item.avatar} />}
                 title={<a href="https://ant.design">{item.heroname}</a>}
                 description={item.description}
               />
               <div>
-                Content{" "}
+                Chọn{"        "}
                 <Checkbox
                   disabled={
                     newSelectedHero.length >= 2 &&

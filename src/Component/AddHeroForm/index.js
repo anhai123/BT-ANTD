@@ -12,6 +12,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addHero } from "../../feature/heroSlice";
+import { resizeFile } from "..";
 import UploadC from "../Upload";
 const key = "updatable";
 const AddHeroForm = () => {
@@ -33,17 +34,29 @@ const AddHeroForm = () => {
   const onChange = (value) => {
     console.log("changed", value);
   };
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Success:", values);
     values.key = values.heroname;
+    // await getBase64(values.avatar.file.originFileObj).then((base64) => {
+    //   values.avatar = base64;
+    // });
+    let hero = await resizeFile(values.avatar.file.originFileObj).then(
+      (uri) => {
+        let hero1 = { ...values, avatar: uri };
+        return hero1;
+      }
+    );
+
+    console.log(hero);
     setTimeout(() => {
       message.success({
-        content: "Successfully create a new hero ",
+        content: "Tạo thành công nhân vật mới. Vào danh sách hero để xem thêm",
         key,
         duration: 2,
       });
     }, 1000);
-    dispatcher(addHero(values));
+
+    dispatcher(addHero(hero));
     form.resetFields();
   };
   const onFinishFailed = (errorInfo) => {
@@ -106,7 +119,7 @@ const AddHeroForm = () => {
       autoComplete="off"
     >
       <Form.Item
-        label="Hero name"
+        label="Tên nhân vật"
         name="heroname"
         rules={[
           {
@@ -114,7 +127,7 @@ const AddHeroForm = () => {
             validator: (rule, value, cb) => {
               heroList.findIndex((hero) => hero.key === value) === -1
                 ? cb()
-                : cb("name have existed");
+                : cb("Cái tên này đã tồn tại");
             },
           },
         ]}
@@ -123,12 +136,12 @@ const AddHeroForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Avatar"
+        label="Ảnh đại diện"
         name="avatar"
         rules={[
           {
             required: true,
-            message: "Please insert a picture!",
+            message: "Chọn 1 tấm ảnh đẹp nào!",
           },
         ]}
       >
@@ -142,12 +155,12 @@ const AddHeroForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Short description"
+        label="Mô tả ngắn"
         name="description"
         rules={[
           {
             required: true,
-            message: "Please input short description",
+            message: "Miêu tả nhân vật.",
           },
         ]}
       >
@@ -155,12 +168,12 @@ const AddHeroForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Attack point"
+        label="Điểm tấn công"
         name="attackP"
         rules={[
           {
             required: true,
-            message: "Please input Attack point",
+            message: "Nhập điểm tấn công",
           },
         ]}
       >
@@ -168,12 +181,12 @@ const AddHeroForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Defend point"
+        label="Điểm phòng thủ"
         name="defendP"
         rules={[
           {
             required: true,
-            message: "Please input Defend point",
+            message: "Nhập điểm phòng thủ",
           },
         ]}
       >
@@ -181,12 +194,12 @@ const AddHeroForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="Percentage of critical damage"
+        label="Tỉ lệ chí mạng"
         name="crit_damage"
         rules={[
           {
             required: true,
-            message: "Please input valid percentage ",
+            message: "Chọn tỉ lệ chí mạng ",
           },
         ]}
       >
@@ -211,7 +224,7 @@ const AddHeroForm = () => {
           type=""
           htmlType="submit"
         >
-          Submit
+          Tạo mới nhận vật
         </Button>
       </Form.Item>
       {/* <img alt="uploadImage" src={file} /> */}

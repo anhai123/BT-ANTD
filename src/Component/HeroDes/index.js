@@ -16,7 +16,7 @@ import {
 } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { UploadOutlined, PaperClipOutlined } from "@ant-design/icons";
-
+import { resizeFile } from "..";
 import "./HeroDes.css";
 import { updateHeroList, deleteHero } from "../../feature/heroSlice";
 const { Header, Footer, Sider, Content } = Layout;
@@ -101,9 +101,20 @@ const HeroDes = () => {
     // console.log()
     try {
       const row = await form.validateFields();
-
-      const newData = { ...data };
-      newData[key] = row[key];
+      console.log(row);
+      let newData;
+      if (key === "avatar") {
+        let hero = await resizeFile(row.avatar.file.originFileObj).then(
+          (uri) => {
+            let hero1 = { ...data, avatar: uri };
+            return hero1;
+          }
+        );
+        newData = hero;
+      } else {
+        newData[key] = row[key];
+      }
+      console.log(newData);
       dispatcher(updateHeroList(newData));
       setEditingKey("");
     } catch (errInfo) {
@@ -128,7 +139,6 @@ const HeroDes = () => {
   }
   const ChoseName = (data) => {
     let name;
-    console.log(data);
     switch (data) {
       case "heroname":
         name = "Tên nhân vật:";
@@ -155,10 +165,7 @@ const HeroDes = () => {
   };
   return (
     <div className="description-containner">
-      <Image
-        className="image"
-        src={URL.createObjectURL(data.avatar.file.originFileObj)}
-      />
+      <Image className="image" src={data.avatar} />
 
       <Form
         form={form}
@@ -185,15 +192,21 @@ const HeroDes = () => {
                   const inputNode =
                     data[0] === ("attackP" || "defendP" || "crit_damage") ? (
                       <InputNumber />
+                    ) : data[0] === "crit_damage" ? (
+                      <InputNumber
+                        defaultValue={100}
+                        min={0}
+                        max={100}
+                        formatter={(value) => `${value}%`}
+                        parser={(value) => value.replace("%", "")}
+                      />
                     ) : data[0] === "avatar" ? (
                       <Upload
                         {...props}
                         fileList={stateUpload.selectedFileList}
                         customRequest={dummyRequest}
                       >
-                        <Button icon={<UploadOutlined />}>
-                          Click to Upload
-                        </Button>
+                        <Button icon={<UploadOutlined />}>Chọn ảnh mới</Button>
                       </Upload>
                     ) : (
                       <Input />
@@ -222,10 +235,10 @@ const HeroDes = () => {
                             marginRight: 8,
                           }}
                         >
-                          Save
+                          Lưu thay đổi
                         </Typography.Link>
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-                          <a>Cancel</a>
+                          <a>Hoãn thay đổi</a>
                         </Popconfirm>
                       </span>
                     </li>
@@ -240,7 +253,7 @@ const HeroDes = () => {
                       {data[0] === "avatar" ? (
                         <>
                           <PaperClipOutlined />
-                          {data[1].file.name}
+                          Ảnh đại diện
                         </>
                       ) : (
                         data[1]
@@ -252,7 +265,7 @@ const HeroDes = () => {
                       className="edit-button"
                       onClick={() => handelClickEditButton(data[0])}
                     >
-                      edit
+                      Chỉnh sửa
                     </Button>
                   </li>
                 );
@@ -264,7 +277,7 @@ const HeroDes = () => {
             style={{ marginLeft: "40px" }}
             onClick={() => handelClickDeleteHeroButton(data["key"])}
           >
-            Delete hero
+            Xóa nhân vật
           </Button>
         </Card>
       </Form>

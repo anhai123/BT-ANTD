@@ -15,7 +15,7 @@ const items = [
   {
     label: (
       <span>
-        <Link to="/add-hero">Add hero</Link>
+        <Link to="/add-hero">Thêm mới nhân vật</Link>
       </span>
     ),
     key: "add_hero",
@@ -24,7 +24,7 @@ const items = [
   {
     label: (
       <span>
-        <Link to="/hero-list">Hero list</Link>
+        <Link to="/hero-list">Danh sách nhân vật</Link>
       </span>
     ),
     key: "hero_list",
@@ -33,7 +33,7 @@ const items = [
   {
     label: (
       <span>
-        <Link to="/battle-field">Hero list</Link>
+        <Link to="/battle-field">Sàn đấu</Link>
       </span>
     ),
     key: "battle_field",
