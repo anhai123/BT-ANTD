@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addHero } from "../../feature/heroSlice";
 import { resizeFile } from "..";
+import heroService from "../../services/Hero.service";
 import UploadC from "../Upload";
 const key = "updatable";
 const AddHeroForm = () => {
@@ -40,14 +41,15 @@ const AddHeroForm = () => {
     // await getBase64(values.avatar.file.originFileObj).then((base64) => {
     //   values.avatar = base64;
     // });
+    let uri1;
     let hero = await resizeFile(values.avatar.file.originFileObj).then(
       (uri) => {
+        uri1 = uri;
         let hero1 = { ...values, avatar: uri };
         return hero1;
       }
     );
 
-    console.log(hero);
     setTimeout(() => {
       message.success({
         content: "Tạo thành công nhân vật mới. Vào danh sách hero để xem thêm",
@@ -57,6 +59,16 @@ const AddHeroForm = () => {
     }, 1000);
 
     dispatcher(addHero(hero));
+    const formm = new FormData();
+
+    formm.append("heroname", values.heroname);
+    formm.append("description", values.description);
+    formm.append("attackP", values.attackP);
+    formm.append("defendP", values.defendP);
+    formm.append("key", values.key);
+    formm.append("crit_damage", values.crit_damage);
+    formm.append("avatar", uri1);
+    await heroService.createNewHero(formm);
     form.resetFields();
   };
   const onFinishFailed = (errorInfo) => {

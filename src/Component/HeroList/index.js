@@ -1,8 +1,11 @@
-import { Card, Descriptions, Pagination } from "antd";
+import { Card, Descriptions, Pagination, Image } from "antd";
 import "./heroList.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import heroService from "../../services/Hero.service";
+import { getAllHero } from "../../feature/heroSlice";
+import { Buffer } from "buffer";
 const { Meta } = Card;
 const pageSize = 8;
 const HeroList = () => {
@@ -36,6 +39,10 @@ const HeroList = () => {
     });
     console.log(state);
   }, [heroList]);
+  useEffect(() => {
+    dispatcher(getAllHero());
+  }, []);
+
   const handleChange = (page) => {
     setState({
       heroList,
@@ -44,6 +51,7 @@ const HeroList = () => {
       maxIndex: page * pageSize,
     });
   };
+
   return (
     <div className="site-card-border-less-wrapper">
       {singleHero ? (
@@ -61,6 +69,9 @@ const HeroList = () => {
                   <img
                     alt="example"
                     src={hero.avatar}
+                    // src={`data:${hero.avatar.contentType};base64, ${Buffer.from(
+                    //   hero.avatar.data
+                    // ).toString("base64")}`}
                     className="postImage"
                     onClick={() => handleClickImageEvent(hero)}
                   />
