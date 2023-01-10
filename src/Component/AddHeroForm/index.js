@@ -216,7 +216,7 @@ const AddHeroForm = () => {
         ]}
       >
         <InputNumber
-          defaultValue={100}
+          defaultValue={0}
           min={0}
           max={100}
           formatter={(value) => `${value}%`}

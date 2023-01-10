@@ -69,7 +69,7 @@ const heroSlice = createSlice({
   reducers: {
     addHero: (state, actions) => {
       state.heroList = [...state.heroList, actions.payload];
-      localStorage.setItem("heroList", JSON.stringify(state.heroList));
+      // localStorage.setItem("heroList", JSON.stringify(state.heroList));
     },
     updateHeroList: (state, actions) => {
       var position;
@@ -86,13 +86,13 @@ const heroSlice = createSlice({
       }
       //không hoạt động, không cập nhật lại dữ liệu gốc
       // state.heroList = state.heroList.splice(position, 1, actions.payload);
-      localStorage.setItem("heroList", JSON.stringify(state.heroList));
+      // localStorage.setItem("heroList", JSON.stringify(state.heroList));
     },
     deleteHero: (state, actions) => {
       state.heroList = state.heroList.filter(
         (post) => post.key !== actions.payload
       );
-      localStorage.setItem("heroList", JSON.stringify(state.heroList));
+      // localStorage.setItem("heroList", JSON.stringify(state.heroList));
     },
   },
   extraReducers: {
