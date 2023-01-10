@@ -13,6 +13,7 @@ import {
   Typography,
   Popconfirm,
   Upload,
+  message,
 } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { UploadOutlined, PaperClipOutlined } from "@ant-design/icons";
@@ -25,6 +26,7 @@ import {
   deleteHeroAPI,
 } from "../../feature/heroSlice";
 const { Header, Footer, Sider, Content } = Layout;
+const key = "updatable";
 const HeroDes = () => {
   let { state } = useLocation();
   let navigate = useNavigate();
@@ -123,6 +125,13 @@ const HeroDes = () => {
       // console.log(newData);
       dispatcher(updateHeroList(newData));
       dispatcher(updateHero(newData));
+      setTimeout(() => {
+        message.success({
+          content: "Cập nhật thông tin nhân vật thành công",
+          key,
+          duration: 2,
+        });
+      }, 1000);
       setEditingKey("");
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
@@ -140,6 +149,13 @@ const HeroDes = () => {
   //Đảm bảo quay lại trang hero list mà dữ liệu trong list đã được cập nhật
   useEffect(() => {
     if (data === undefined) {
+      setTimeout(() => {
+        message.success({
+          content: "Xóa nhân vật thành công",
+          key,
+          duration: 2,
+        });
+      }, 1000);
       setHeroDeleteYet(true);
     }
     return () => redirect("/hero-list");
@@ -147,6 +163,13 @@ const HeroDes = () => {
 
   const origindata = data !== undefined ? Object.entries(data) : [];
   if (HeroDeleteYet) {
+    setTimeout(() => {
+      message.success({
+        content: "Xóa nhân vật thành công",
+        key,
+        duration: 2,
+      });
+    }, 1000);
     navigate("/hero-list", { replace: true });
   }
   const ChoseName = (data) => {
