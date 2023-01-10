@@ -75,7 +75,7 @@ const AddHeroForm = () => {
     console.log("Failed:", errorInfo);
     setTimeout(() => {
       message.error({
-        content: `${errorInfo}`,
+        content: `Tạo mới nhân vật không thành công`,
         key,
         duration: 2,
       });
