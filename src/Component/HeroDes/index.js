@@ -238,7 +238,7 @@ const HeroDes = () => {
                           rules={[
                             {
                               required: true,
-                              message: `Please Input ${data[0]}!`,
+                              message: `Hãy nhập ${data[0]}!`,
                             },
                           ]}
                         >

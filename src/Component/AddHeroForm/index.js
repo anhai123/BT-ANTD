@@ -124,6 +124,9 @@ const AddHeroForm = () => {
         span: 6,
       }}
       initialValues={{
+        attackP: 0,
+        defendP: 0,
+        crit_damage: 0,
         remember: true,
       }}
       onFinish={onFinish}
@@ -136,12 +139,17 @@ const AddHeroForm = () => {
         rules={[
           {
             required: true,
-            validator: (rule, value, cb) => {
-              heroList.findIndex((hero) => hero.key === value) === -1
-                ? cb()
-                : cb("Cái tên này đã tồn tại");
-            },
+            message: "Nhập tên nhân vật",
           },
+
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (heroList.findIndex((hero) => hero.key === value) === -1) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error("Cái tên này đã tồn tại"));
+            },
+          }),
         ]}
       >
         <Input />
