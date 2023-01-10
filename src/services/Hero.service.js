@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:9001/hero/";
+const API_URL = "https://bt-antd-jsr4.vercel.app/";
 const createNewHero = async (form) => {
   for (const value of form.values()) {
     console.log(value);

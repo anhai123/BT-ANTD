@@ -25,5 +25,6 @@ module.exports = function (app) {
   app.post("/hero/update", upload.none(), controller.updateHero);
 
   app.get("/hero/getAll", controller.getAllHero);
+
   app.delete("/hero/delete", controller.deleteHero);
 };
