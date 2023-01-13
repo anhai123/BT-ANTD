@@ -262,6 +262,24 @@ const HeroDes = () => {
                               required: true,
                               message: `Hãy nhập ${data[0]}!`,
                             },
+                            ({ getFieldValue }) => ({
+                              validator(_, value) {
+                                console.log(value);
+                                if (data[0] !== "heroname") {
+                                  return Promise.resolve();
+                                } else if (
+                                  heroList.findIndex(
+                                    (hero) => hero.key === value
+                                  ) === -1
+                                ) {
+                                  return Promise.resolve();
+                                }
+
+                                return Promise.reject(
+                                  new Error("Cái tên này đã tồn tại")
+                                );
+                              },
+                            }),
                           ]}
                         >
                           {inputNode}
