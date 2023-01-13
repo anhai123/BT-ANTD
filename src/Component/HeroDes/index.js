@@ -226,30 +226,29 @@ const HeroDes = () => {
               {origindata.map((data) => {
                 if (!["key", "__v", "_id"].includes(data[0])) {
                   if (data[0] === editingKey) {
-                    const inputNode =
-                      data[0] === ("attackP" || "defendP" || "crit_damage") ? (
-                        <InputNumber />
-                      ) : data[0] === "crit_damage" ? (
-                        <InputNumber
-                          defaultValue={100}
-                          min={0}
-                          max={100}
-                          formatter={(value) => `${value}%`}
-                          parser={(value) => value.replace("%", "")}
-                        />
-                      ) : data[0] === "avatar" ? (
-                        <Upload
-                          {...props}
-                          fileList={stateUpload.selectedFileList}
-                          customRequest={dummyRequest}
-                        >
-                          <Button icon={<UploadOutlined />}>
-                            Chọn ảnh mới
-                          </Button>
-                        </Upload>
-                      ) : (
-                        <Input />
-                      );
+                    const inputNode = ["attackP", "defendP"].includes(
+                      data[0]
+                    ) ? (
+                      <InputNumber min={0} />
+                    ) : data[0] === "crit_damage" ? (
+                      <InputNumber
+                        defaultValue={100}
+                        min={0}
+                        max={100}
+                        formatter={(value) => `${value}%`}
+                        parser={(value) => value.replace("%", "")}
+                      />
+                    ) : data[0] === "avatar" ? (
+                      <Upload
+                        {...props}
+                        fileList={stateUpload.selectedFileList}
+                        customRequest={dummyRequest}
+                      >
+                        <Button icon={<UploadOutlined />}>Chọn ảnh mới</Button>
+                      </Upload>
+                    ) : (
+                      <Input />
+                    );
                     return (
                       <li key={data[0]}>
                         <span>{data[0]}:</span>
